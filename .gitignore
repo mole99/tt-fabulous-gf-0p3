@@ -1,0 +1,26 @@
+.DS_Store
+.idea
+.vscode
+*.vcd
+runs
+tt_submission
+src/user_config.tcl
+test/sim_build
+test/__pycache__/
+test/results.xml
+test/gate_level_netlist.v
+
+# LibreLane
+macro/
+runs/
+
+# Python
+*.egg-info/
+__pycache__/
+
+# cocotb
+sim_build/
+*.gtkw
+
+# explicitly allow nextpnr model
+!user_designs/fabrics/*/macro/

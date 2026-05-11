@@ -1,0 +1,78 @@
+meta:
+  flow: Classic
+  substituting_steps:
+    Checker.DisconnectedPins: null
+
+    # Promote power pins
+    +Odb.ManualMacroPlacement: Odb.FABulousPower
+    
+    # TODO
+    OpenROAD.IRDropReport: null
+    Checker.YosysUnmappedCells: null
+
+DESIGN_NAME: tt_um_fabulous_gf_26a
+VERILOG_FILES:
+  - dir::src/tt_um_fabulous_gf_26a.sv
+  - dir::ip/fabric_config/fabric_config.sv
+  - dir::ip/fabric_bitbang/fabric_bitbang.sv
+  
+CLOCK_PORT: clk
+CLOCK_PERIOD: 20 # 20ns = 50MHz
+
+FP_SIZING: "absolute"
+DIE_AREA: [0, 0, expr::(2880.640/2), expr::(1473.920/2)]
+FP_DEF_TEMPLATE: dir::src/tt_block_4x4_pgvdd.def
+
+PDN_CFG: dir::src/pdn_cfg.tcl
+#PDN_EXTEND_TO: "boundary"
+
+PDN_VOFFSET: 20
+PDN_VPITCH: 50
+PDN_VWIDTH: 3.2
+
+PL_TARGET_DENSITY_PCT: 44 #45
+GRT_ALLOW_CONGESTION: true
+
+RT_MAX_LAYER: Metal4
+FP_PDN_MULTILAYER: False
+
+# Width should be multiple of 0.56 (Metal2 pitch)
+# Height should be multiple of 0.56 (Metal3 pitch)
+# Standard cell row height: 3.92 (8 Metal3 tracks)
+FP_MACRO_HORIZONTAL_HALO: expr::(0.56 * 8)
+FP_MACRO_VERTICAL_HALO: expr::(0.56 * 8)
+
+# Save some more core area
+TOP_MARGIN_MULT: 1
+BOTTOM_MARGIN_MULT: 2
+
+LEFT_MARGIN_MULT: 4
+RIGHT_MARGIN_MULT: 1
+
+FP_OBSTRUCTIONS:
+- [expr::(0.56 * (2374)), 0, "expr::$DIE_AREA[2]", "expr::($DIE_AREA[3] - (0.56 * 112))"]
+
+MACROS:
+  tiny_fabric_10x4:
+    gds:
+      - dir::fabrics/tiny_fabric_10x4/macro/gf180mcuD/gds/tiny_fabric_10x4.gds
+    lef:
+      - dir::fabrics/tiny_fabric_10x4/macro/gf180mcuD/lef/tiny_fabric_10x4.lef
+    nl:
+      - dir::fabrics/tiny_fabric_10x4/macro/gf180mcuD/nl/tiny_fabric_10x4.nl.v
+    instances:
+      tiny_fabric_10x4:
+        location: [expr::((0.46 * 120) * 3), expr::(0.68 * 1)] # expr::(0.68 * 27)
+        orientation: FS
+
+ERROR_ON_PDN_VIOLATIONS: False
+
+PDN_MACRO_CONNECTIONS:
+- "tiny_fabric_10x4 VPWR VGND VPWR VGND"
+
+# No extract-unique, because the power straps
+# are connected in the top-level integration
+MAGIC_EXT_UNIQUE: notopports
+
+# Tiny Tapeout expects pins to match the template DEF
+MAGIC_WRITE_LEF_PINONLY: true
