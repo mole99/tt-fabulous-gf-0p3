@@ -27,7 +27,7 @@ BITSTREAM_START = 0xFAB0FAB1
 DESYNC_FLAG = 20
 
 NUM_ROWS = 4
-NUM_COLUMNS = 10
+NUM_COLUMNS = 6
 
 async def send_word(dut, word):
     for i in range(32):
