@@ -10,9 +10,9 @@ meta:
     OpenROAD.IRDropReport: null
     Checker.YosysUnmappedCells: null
 
-DESIGN_NAME: tt_um_fabulous_gf_26a
+DESIGN_NAME: tt_um_fabulous_gf_0p3
 VERILOG_FILES:
-  - dir::src/tt_um_fabulous_gf_26a.sv
+  - dir::src/tt_um_fabulous_gf_0p3.sv
   - dir::ip/fabric_config/fabric_config.sv
   - dir::ip/fabric_bitbang/fabric_bitbang.sv
   
