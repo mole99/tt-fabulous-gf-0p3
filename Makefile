@@ -1,4 +1,6 @@
 PDK ?= gf180mcuD
+SCL ?= default
+TILE_LIBRARY ?= tiny
 
 # Get the fabric names
 FABRICS :=  $(patsubst fabrics/%,%,$(wildcard fabrics/*)) 
@@ -6,6 +8,10 @@ FABRICS :=  $(patsubst fabrics/%,%,$(wildcard fabrics/*))
 FABRICS_OPENROAD := $(addsuffix -openroad,$(FABRICS))
 FABRICS_KLAYOUT := $(addsuffix -klayout,$(FABRICS))
 FABRICS_COPY := $(addsuffix -copy,$(FABRICS))
+
+tiles:
+	cd ip/fabulous-tiles/; PDK=${PDK} SCL=${SCL} TILE_LIBRARY=${TILE_LIBRARY} nix develop --command make all
+.PHONY: tiles
 
 all: $(FABRICS)
 .PHONY: all
