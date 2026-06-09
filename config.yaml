@@ -14,6 +14,9 @@ meta:
     OpenROAD.IRDropReport: null
     Checker.YosysUnmappedCells: null
 
+    # ECO diodes
+    +OpenROAD.GlobalRouting: Odb.InsertECODiodes
+
 DESIGN_NAME: tt_um_fabulous_gf_0p3
 VERILOG_FILES:
   - dir::src/tt_um_fabulous_gf_0p3.sv
@@ -49,6 +52,10 @@ DIODE_ON_PORTS: both
 # can lead to antenna violations
 DESIGN_REPAIR_BUFFER_OUTPUT_PORTS: False
 
+# Add antenna diodes
+INSERT_ECO_DIODES:
+- target: tiny_fabric_6x4/Tile_X3Y3_D_OUT_top
+
 # Width should be multiple of 0.56 (Metal2 pitch)
 # Height should be multiple of 0.56 (Metal3 pitch)
 # Standard cell row height: 3.92 (8 Metal3 tracks)
@@ -81,7 +88,7 @@ MACROS:
 ERROR_ON_PDN_VIOLATIONS: False
 
 PDN_MACRO_CONNECTIONS:
-- "tiny_fabric_6x4 VDD VSS VPWR VGND"
+- "tiny_fabric_6x4 VPWR VGND VPWR VGND"
 
 # No extract-unique, because the power straps
 # are connected in the top-level integration
